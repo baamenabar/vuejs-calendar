@@ -8,6 +8,8 @@ const http = require('http');
 
 app.use('/public', express.static(path.join(__dirname, 'public')));
 
+app.use('/dist', express.static(path.join(__dirname, 'dist')));
+
 app.get('/', (req, res) => {
   let template = fs.readFileSync(path.resolve('./index.html'), 'utf-8');
   res.send(template);
@@ -25,6 +27,7 @@ if (process.env.NODE_ENV === 'development') {
 server.listen(process.env.PORT, function () {
   console.log(`Example app listening on port ${process.env.PORT}!`);
   if (process.env.NODE_ENV === 'development') {
-    require("open")(`http://localhost:${process.env.PORT}`);
+    //require("open")(`http://localhost:${process.env.PORT}`);
+    console.log('Should open a new browser but I dont want it to.')
   }
 });

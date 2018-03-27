@@ -11,9 +11,11 @@ export default {
     methods: {
         dec() {
             this.$store.commit('changeMonth', -1);
+            this.$store.commit('eventFormActive',false);
         },
         inc() {
             this.$store.commit('changeMonth', 1);
+            this.$store.commit('eventFormActive',false);
         },
     },
     computed: {

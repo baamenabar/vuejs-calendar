@@ -1,8 +1,8 @@
 <template>
     <div>
         <div>{{ formattedDate }}</div>
-        <button @click="dec">-</button>
-        <button @click="inc">+</button>
+        <button @click="dec"><</button>
+        <button @click="inc">></button>
     </div>
 </template>
 

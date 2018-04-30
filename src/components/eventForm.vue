@@ -38,9 +38,11 @@ export default {
         this.$store.commit('eventFormActive',false);
     },
     create() {
-        this.$store.commit('addEvent', this.description);
-        this.$store.commit('eventFormActive', false);
-        this.description='';
+        this.$store.dispatch('addEvent', this.description)
+        .then(()=>{
+            this.$store.commit('eventFormActive', false);
+            this.description='';
+        });
     }
   },
   directives: {

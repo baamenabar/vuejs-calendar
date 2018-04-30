@@ -5,6 +5,8 @@ Vue.use(Vuex);
 import moment from 'moment-timezone';
 moment.tz.setDefault('UTC');
 
+import Axios from 'axios';
+
 export default new Vuex.Store({
     state: {
         currentYear: 2018,
@@ -15,13 +17,7 @@ export default new Vuex.Store({
         },
         eventFormActive: false,
         activeDate: null,
-        events: [
-                {title: 'Some event', date: moment('2018-02-06', 'YYYY-MM-DD')},
-                {title: 'Some other event', date: moment('2018-02-12', 'YYYY-MM-DD')},
-                {title: 'No event', date: moment('2018-03-14', 'YYYY-MM-DD')},
-                {title: 'Cumpleaños Agustín', date: moment('2018-03-14', 'YYYY-MM-DD')},
-                {title: 'Remember that', date: moment('2018-03-26', 'YYYY-MM-DD')},
-            ]
+        events: [],
     },
     mutations: {
         changeMonth(storeState, payload) {
@@ -43,13 +39,30 @@ export default new Vuex.Store({
             storeState.eventFormActive = payload;
         },
         addEvent(storeState, payload) {
-            storeState.events.push({
-                title: payload,
-                date: moment(storeState.activeDate),
-            });
+            storeState.events.push(payload);
         },
         activeDate(storeState, payload) {
             storeState.activeDate = payload;
         },
+    },
+    actions: {
+        addEvent(context, payload) {
+            return new Promise((resolve, reject)=>{
+                const evt = {
+                    title: payload,
+                    date: moment(context.state.activeDate),
+                };
+                Axios.post('/event',evt)
+                .then((response)=>{
+                    if(response.status==200){
+                        context.commit('addEvent',evt);
+                        resolve();
+                    } else {
+                        console.error('Got unexpected response from serever')
+                        reject();
+                    }
+                })
+            })
+        }
     }
 });

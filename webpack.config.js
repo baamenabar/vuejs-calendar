@@ -5,6 +5,14 @@ var webpack = require('webpack');
 var webpackMerge = require('webpack-merge');
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
 
+var babelLoader = {
+          loader: 'babel-loader',
+          options: {
+            "presets": [ [ "es2015" ] ],
+            "plugins": [ "transform-es2015-destructuring", "transform-runtime" ]
+          }
+        };
+
 var baseConfig = {
   output: {
     path: path.resolve(__dirname, './dist'),
@@ -14,13 +22,7 @@ var baseConfig = {
     rules: [
       {
         test: /\.js$/,
-        use: [{
-          loader: 'babel-loader',
-          options: {
-            "presets": [ [ "es2015" ] ],
-            "plugins": [ "transform-es2015-destructuring", "transform-runtime" ]
-          }
-        }],
+        use: [babelLoader],
         exclude: /node_modules/
       },
       {
@@ -41,6 +43,7 @@ var baseConfig = {
         options: {
           loaders: {
             'scss': 'vue-style-loader!css-loader!sass-loader',
+            'js': [babelLoader],
           }
         }
       }

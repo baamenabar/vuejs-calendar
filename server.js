@@ -46,15 +46,20 @@ app.get('/', (req, res) => {
 
 app.use(require('body-parser').json());
 app.post('/event', (req, res)=>{
- console.log('we got it!!', req.body);
- events.push({
-  ...req.body,
-  date: moment(req.body.date),
- });
+ //console.log('we got it!!', req.body);
+ let event = req.body;
+ event.date = moment(req.body.date);
+ events.push(event);
  res.sendStatus(200);
 })
 
 const server = http.createServer(app);
+
+if (process.env.NODE_ENV === 'production') {
+  const bundle = fs.readFileSync('dist/node.bundle.js', 'utf8');
+  renderer = require('vue-server-renderer').createBundleRenderer(bundle);
+  //app.use('/dist')
+}
 
 if (process.env.NODE_ENV === 'development') {
   const reload = require('reload');
